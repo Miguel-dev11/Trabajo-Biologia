@@ -1,0 +1,2378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ruta Verde Doñana — Cicloturismo en Huelva</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+/* ===== CSS VARIABLES ===== */
+:root {
+  --verde: #2D6A4F;
+  --verde-claro: #52B788;
+  --verde-lima: #95D5B2;
+  --azul: #1B4F72;
+  --azul-claro: #2E86C1;
+  --azul-cielo: #AED6F1;
+  --dorado: #D4AC0D;
+  --dorado-claro: #F9E79F;
+  --arena: #F0E6C8;
+  --blanco: #FAFAFA;
+  --negro: #0D1117;
+  --gris: #6B7280;
+  --texto: #1C2833;
+  --glass: rgba(255,255,255,0.12);
+  --glass-border: rgba(255,255,255,0.25);
+  --shadow: 0 20px 60px rgba(0,0,0,0.15);
+  --shadow-card: 0 8px 32px rgba(0,0,0,0.12);
+  --radius: 20px;
+  --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="dark"] {
+  --blanco: #0D1117;
+  --texto: #E8F4FD;
+  --arena: #1A2332;
+  --gris: #9CA3AF;
+  --glass: rgba(0,0,0,0.3);
+  --glass-border: rgba(255,255,255,0.1);
+  --shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; overflow-x: hidden; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--blanco);
+  color: var(--texto);
+  overflow-x: hidden;
+  transition: background 0.5s, color 0.5s;
+  cursor: none;
+}
+
+/* ===== CUSTOM CURSOR ===== */
+.cursor {
+  width: 12px; height: 12px;
+  background: var(--verde-claro);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease, opacity 0.3s;
+  mix-blend-mode: multiply;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 2px solid var(--verde-claro);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s, width 0.3s, height 0.3s;
+  opacity: 0.6;
+}
+.cursor-ring.hover { width: 60px; height: 60px; opacity: 0.3; }
+
+/* ===== SCROLL PROGRESS ===== */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--verde-claro), var(--dorado), var(--azul-claro));
+  z-index: 1000;
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.1s;
+}
+
+/* ===== NAV ===== */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 900;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: var(--transition);
+}
+nav.scrolled {
+  background: rgba(250,250,250,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 14px 40px;
+  box-shadow: 0 2px 30px rgba(0,0,0,0.08);
+}
+[data-theme="dark"] nav.scrolled { background: rgba(13,17,23,0.9); }
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--blanco);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+nav.scrolled .nav-logo { color: var(--verde); }
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+nav.scrolled .nav-links a { color: var(--gris); }
+.nav-links a:hover { color: var(--verde-claro) !important; }
+
+.nav-actions { display: flex; gap: 12px; align-items: center; }
+.btn-theme {
+  background: none;
+  border: 1.5px solid rgba(255,255,255,0.4);
+  color: white;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  cursor: none;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  transition: var(--transition);
+}
+nav.scrolled .btn-theme { border-color: var(--verde-claro); color: var(--verde-claro); }
+.btn-theme:hover { background: var(--verde-claro); color: white; border-color: var(--verde-claro); }
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 30% 40%, rgba(45,106,79,0.7) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 60%, rgba(27,79,114,0.6) 0%, transparent 60%),
+    linear-gradient(160deg, #0D2818 0%, #1B3A2D 35%, #0A1628 70%, #0D1117 100%);
+}
+
+/* Animated particles */
+.particles { position: absolute; inset: 0; pointer-events: none; }
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(149,213,178,0.4);
+  animation: float linear infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(100vh) translateX(0) scale(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 0.6; }
+  100% { transform: translateY(-20px) translateX(var(--dx, 30px)) scale(1); opacity: 0; }
+}
+
+/* Sun rays effect */
+.sun-rays {
+  position: absolute;
+  top: -50%; right: -10%;
+  width: 600px; height: 600px;
+  background: conic-gradient(from 0deg, transparent 0deg, rgba(212,172,13,0.08) 15deg, transparent 30deg, rgba(212,172,13,0.06) 45deg, transparent 60deg, rgba(212,172,13,0.08) 75deg, transparent 90deg, rgba(212,172,13,0.06) 105deg, transparent 120deg, rgba(212,172,13,0.04) 135deg, transparent 150deg, rgba(212,172,13,0.08) 165deg, transparent 180deg);
+  border-radius: 50%;
+  animation: rotate 60s linear infinite;
+}
+@keyframes rotate { to { transform: rotate(360deg); } }
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  max-width: 900px;
+  padding: 0 24px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--verde-lima);
+  margin-bottom: 28px;
+  animation: fadeInDown 1s ease both;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 900;
+  line-height: 0.95;
+  color: white;
+  letter-spacing: -0.03em;
+  margin-bottom: 12px;
+  animation: fadeInUp 1s 0.2s ease both;
+}
+.hero-title span { color: var(--verde-lima); font-style: italic; }
+
+.hero-subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 40px;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  animation: fadeInUp 1s 0.4s ease both;
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  margin-bottom: 44px;
+  animation: fadeInUp 1s 0.6s ease both;
+}
+.hero-stat { text-align: center; }
+.hero-stat-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--verde-lima);
+  display: block;
+}
+.hero-stat-label {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--verde-claro);
+  color: white;
+  padding: 16px 36px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  transition: var(--transition);
+  animation: fadeInUp 1s 0.8s ease both;
+  border: none;
+  cursor: none;
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.btn-primary:hover::before { opacity: 1; }
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(82,183,136,0.4); }
+
+.hero-scroll {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255,255,255,0.4);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  animation: fadeIn 2s 1.5s ease both;
+}
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { transform: scaleY(1); opacity: 0.4; }
+  50% { transform: scaleY(1.5); opacity: 1; }
+}
+
+/* ===== SECTION BASE ===== */
+section { padding: 100px 0; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+.section-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--verde-claro);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-tag::before {
+  content: '';
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: var(--verde-claro);
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+
+/* ===== INTRO ===== */
+.intro { background: var(--arena); }
+[data-theme="dark"] .intro { background: #111A26; }
+
+.intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.intro-text p {
+  color: var(--gris);
+  line-height: 1.8;
+  margin-bottom: 24px;
+  font-size: 1.05rem;
+}
+
+.intro-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.info-card {
+  background: var(--blanco);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+  transition: var(--transition);
+  border: 1px solid transparent;
+}
+[data-theme="dark"] .info-card { background: #1A2332; }
+.info-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--verde-claro);
+  box-shadow: 0 20px 50px rgba(82,183,136,0.15);
+}
+.info-card-icon { font-size: 2rem; margin-bottom: 12px; }
+.info-card-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gris);
+  margin-bottom: 6px;
+}
+.info-card-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--verde);
+}
+[data-theme="dark"] .info-card-value { color: var(--verde-claro); }
+.info-card-sub { font-size: 0.82rem; color: var(--gris); margin-top: 4px; }
+
+/* ===== MAP ===== */
+.map-section { background: var(--negro); color: white; overflow: hidden; }
+.map-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 60px auto 0;
+}
+
+.route-map {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.map-point {
+  cursor: none;
+  transition: var(--transition);
+}
+.map-point circle { transition: r 0.3s, filter 0.3s; }
+.map-point:hover circle { r: 16; filter: drop-shadow(0 0 12px var(--verde-claro)); }
+
+.map-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  fill: rgba(255,255,255,0.9);
+  font-weight: 500;
+  pointer-events: none;
+}
+.map-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  fill: white;
+  font-weight: 700;
+  pointer-events: none;
+  dominant-baseline: central;
+  text-anchor: middle;
+}
+
+.map-tooltip {
+  position: absolute;
+  background: rgba(13,17,23,0.95);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--verde-claro);
+  border-radius: 12px;
+  padding: 16px 20px;
+  min-width: 180px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 100;
+}
+.map-tooltip.visible { opacity: 1; }
+.map-tooltip-title { color: var(--verde-lima); font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; }
+.map-tooltip-info { color: rgba(255,255,255,0.65); font-size: 0.8rem; }
+
+/* ===== STOPS ===== */
+.stop-section {
+  padding: 120px 0;
+  position: relative;
+  overflow: hidden;
+}
+.stop-section:nth-child(odd) { background: var(--blanco); }
+.stop-section:nth-child(even) { background: var(--arena); }
+[data-theme="dark"] .stop-section:nth-child(even) { background: #111A26; }
+
+.stop-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 10rem;
+  font-weight: 900;
+  position: absolute;
+  top: -20px;
+  right: -10px;
+  color: rgba(82,183,136,0.07);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.stop-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+.stop-grid.reverse { direction: rtl; }
+.stop-grid.reverse > * { direction: ltr; }
+
+.stop-visual {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+}
+
+.stop-illustration {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.stop-time-badge {
+  position: absolute;
+  top: 20px; left: 20px;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.8rem;
+}
+
+.stop-km-badge {
+  position: absolute;
+  bottom: 20px; right: 20px;
+  background: var(--verde-claro);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.stop-info { padding: 10px 0; }
+.stop-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(82,183,136,0.12);
+  border: 1px solid rgba(82,183,136,0.3);
+  color: var(--verde-claro);
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.stop-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+
+.stop-desc {
+  color: var(--gris);
+  line-height: 1.8;
+  font-size: 1rem;
+  margin-bottom: 32px;
+}
+
+/* Eco cards */
+.eco-tabs {
+  display: flex;
+  gap: 4px;
+  background: rgba(0,0,0,0.06);
+  padding: 4px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+[data-theme="dark"] .eco-tabs { background: rgba(255,255,255,0.06); }
+.eco-tab {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  background: none;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gris);
+  cursor: none;
+  transition: all 0.3s;
+  font-family: 'DM Sans', sans-serif;
+  text-align: center;
+}
+.eco-tab.active {
+  background: var(--verde-claro);
+  color: white;
+  box-shadow: 0 4px 12px rgba(82,183,136,0.3);
+}
+.eco-panel { display: none; }
+.eco-panel.active { display: block; }
+
+.eco-content {
+  background: var(--blanco);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid rgba(82,183,136,0.15);
+}
+[data-theme="dark"] .eco-content { background: #1A2332; }
+
+.eco-title {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--verde-claro);
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.species-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.species-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: rgba(82,183,136,0.06);
+  border-radius: 10px;
+  font-size: 0.82rem;
+  border: 1px solid rgba(82,183,136,0.1);
+}
+.species-emoji { font-size: 1.3rem; }
+.species-name { font-weight: 500; color: var(--texto); }
+.species-type { font-size: 0.7rem; color: var(--gris); }
+
+.biodata-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.biodata-item {
+  padding: 12px;
+  background: rgba(27,79,114,0.08);
+  border-radius: 10px;
+  border: 1px solid rgba(27,79,114,0.12);
+}
+.biodata-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gris); margin-bottom: 4px; }
+.biodata-val { font-size: 0.9rem; font-weight: 600; color: var(--azul-claro); }
+
+/* Relations diagram */
+.relations-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.relation-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  background: rgba(212,172,13,0.08);
+  border: 1px solid rgba(212,172,13,0.2);
+  transition: var(--transition);
+}
+.relation-item:hover {
+  background: rgba(212,172,13,0.15);
+  transform: translateX(4px);
+}
+.relation-type {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(212,172,13,0.2);
+  color: var(--dorado);
+  white-space: nowrap;
+}
+
+/* ===== STATS BAR ===== */
+.stats-section {
+  background: var(--verde);
+  color: white;
+  padding: 80px 0;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 32px;
+}
+.stat-item { text-align: center; }
+.stat-icon { font-size: 2rem; margin-bottom: 12px; }
+.stat-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--verde-lima);
+  display: block;
+  margin-bottom: 4px;
+}
+.stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.65); text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* ===== PROGRESS BAR ===== */
+.terrain-bars { margin-top: 60px; }
+.terrain-bar-item { margin-bottom: 20px; }
+.terrain-bar-head { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.terrain-bar-label { font-size: 0.85rem; font-weight: 500; color: rgba(255,255,255,0.8); }
+.terrain-bar-pct { font-family: 'Space Mono', monospace; font-size: 0.82rem; color: var(--verde-lima); }
+.terrain-bar-track {
+  height: 8px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50px;
+  overflow: hidden;
+}
+.terrain-bar-fill {
+  height: 100%;
+  border-radius: 50px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ===== INSPIRE ===== */
+.inspire-section {
+  background: var(--negro);
+  color: white;
+  text-align: center;
+  padding: 140px 0;
+  position: relative;
+  overflow: hidden;
+}
+.inspire-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(45,106,79,0.4) 0%, transparent 70%);
+}
+.inspire-content { position: relative; z-index: 2; max-width: 780px; margin: 0 auto; padding: 0 24px; }
+.inspire-quote {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3.8rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.3;
+  color: white;
+  margin-bottom: 32px;
+  opacity: 0.95;
+}
+.inspire-quote em { color: var(--verde-lima); font-style: normal; }
+.inspire-sub {
+  color: rgba(255,255,255,0.5);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 48px;
+}
+.inspire-badges {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.inspire-badge {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+  color: rgba(255,255,255,0.8);
+  padding: 10px 22px;
+  border-radius: 50px;
+  font-size: 0.83rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+.inspire-badge:hover {
+  background: rgba(82,183,136,0.2);
+  border-color: var(--verde-claro);
+  color: white;
+  transform: translateY(-3px);
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: var(--negro);
+  color: rgba(255,255,255,0.5);
+  padding: 60px 0 40px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 60px;
+  margin-bottom: 48px;
+}
+.footer-brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: white;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.footer-brand-tagline { font-size: 0.88rem; line-height: 1.7; margin-bottom: 20px; }
+.footer-author {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(82,183,136,0.1);
+  border: 1px solid rgba(82,183,136,0.25);
+  padding: 10px 18px;
+  border-radius: 50px;
+  font-size: 0.82rem;
+}
+.author-name { color: var(--verde-lima); font-weight: 600; }
+.footer-col-title {
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 20px;
+}
+.footer-links { list-style: none; }
+.footer-links li { margin-bottom: 10px; }
+.footer-links a {
+  color: rgba(255,255,255,0.45);
+  text-decoration: none;
+  font-size: 0.88rem;
+  transition: color 0.3s;
+}
+.footer-links a:hover { color: var(--verde-claro); }
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+}
+.footer-bottom-author {
+  color: rgba(255,255,255,0.4);
+}
+.footer-bottom-author span { color: var(--verde-claro); font-weight: 600; }
+
+.eco-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.eco-chip {
+  background: rgba(45,106,79,0.2);
+  border: 1px solid rgba(45,106,79,0.4);
+  color: var(--verde-lima);
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.7; }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(50px);
+  transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .intro-grid, .stop-grid, .stop-grid.reverse { grid-template-columns: 1fr; gap: 40px; }
+  .stop-grid.reverse { direction: ltr; }
+  .stats-grid { grid-template-columns: repeat(3, 1fr); }
+  .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+  .hero-stats { gap: 28px; }
+  nav { padding: 16px 24px; }
+  .container { padding: 0 24px; }
+  .nav-links { display: none; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ===== WAVE DIVIDER ===== */
+.wave-divider { display: block; width: 100%; overflow: hidden; line-height: 0; }
+.wave-divider svg { display: block; }
+
+</style>
+</head>
+
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Scroll progress -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Ruta Verde Doñana</a>
+  <ul class="nav-links">
+    <li><a href="#intro">La Ruta</a></li>
+    <li><a href="#mapa">Mapa</a></li>
+    <li><a href="#paradas">Paradas</a></li>
+    <li><a href="#stats">Datos</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn-theme" id="themeBtn" title="Cambiar tema">🌙</button>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="sun-rays"></div>
+  <div class="particles" id="particles"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">🌿 Cicloturismo ecológico · Huelva, España</div>
+    <h1 class="hero-title">Ruta Verde<br><span>Doñana</span></h1>
+    <p class="hero-subtitle">Un día perfecto entre pinares, marismas y océano</p>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-num">52 km</span>
+        <span class="hero-stat-label">Distancia</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">10 h</span>
+        <span class="hero-stat-label">Duración</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">5 🌿</span>
+        <span class="hero-stat-label">Paradas</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">+250</span>
+        <span class="hero-stat-label">Especies</span>
+      </div>
+    </div>
+
+    <a href="#intro" class="btn-primary">
+      🚴 Explorar la ruta
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Desplázate</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ===== INTRO ===== -->
+<section class="intro" id="intro">
+  <div class="container">
+    <div class="intro-grid">
+      <div class="intro-text reveal-left">
+        <div class="section-tag">La aventura</div>
+        <h2 class="section-title">Una jornada entre dos mundos naturales</h2>
+        <p>Desde el paseo marítimo de Matalascañas al amanecer hasta el regreso por la costa bañado en luz dorada, esta ruta recorre los ecosistemas más singulares de Europa occidental.</p>
+        <p>Los pinares centenarios de Doñana, las marismas con flamencos, las dunas móviles de Cuesta Maneli y los acantilados atlánticos forman un escenario cinematográfico único que cambia en cada kilómetro.</p>
+        <p>Diseñada para bicicleta convencional o eléctrica, es accesible para todos los niveles, con terreno compacto y bien señalizado durante gran parte del recorrido.</p>
+      </div>
+      <div class="intro-cards reveal-right">
+        <div class="info-card">
+          <div class="info-card-icon">📏</div>
+          <div class="info-card-label">Distancia total</div>
+          <div class="info-card-value">52 km</div>
+          <div class="info-card-sub">Circular desde Matalascañas</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">⏱️</div>
+          <div class="info-card-label">Duración</div>
+          <div class="info-card-value">7:00–19:00</div>
+          <div class="info-card-sub">Salida al amanecer</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">🏃</div>
+          <div class="info-card-label">Dificultad</div>
+          <div class="info-card-value">Media</div>
+          <div class="info-card-sub">Fácil con e-bike ⚡</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">🌡️</div>
+          <div class="info-card-label">Temperatura</div>
+          <div class="info-card-value">22–32°C</div>
+          <div class="info-card-sub">Primavera–Verano</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">🛤️</div>
+          <div class="info-card-label">Terreno</div>
+          <div class="info-card-value">Mixto</div>
+          <div class="info-card-sub">Pista, pasarela, asfalto</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">🌿</div>
+          <div class="info-card-label">Ecosistemas</div>
+          <div class="info-card-value">5 tipos</div>
+          <div class="info-card-sub">Costa, pinar, marisma...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MAP ===== -->
+<section class="map-section" id="mapa">
+  <div class="container">
+    <div class="reveal" style="text-align:center">
+      <div class="section-tag" style="justify-content:center; color:var(--verde-lima)">Recorrido completo</div>
+      <h2 class="section-title" style="color:white">Mapa interactivo<br>de la ruta</h2>
+      <p style="color:rgba(255,255,255,0.5); max-width:500px; margin:0 auto">Pasa el cursor sobre cada punto para descubrir los detalles de cada parada</p>
+    </div>
+
+    <div class="map-wrapper reveal">
+      <svg class="route-map" viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" id="routeMap">
+        <!-- Background subtle grid -->
+        <defs>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+          </pattern>
+          <linearGradient id="routeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#52B788"/>
+            <stop offset="50%" style="stop-color:#2E86C1"/>
+            <stop offset="100%" style="stop-color:#D4AC0D"/>
+          </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <marker id="arrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#52B788" opacity="0.6"/>
+          </marker>
+        </defs>
+
+        <rect width="900" height="500" fill="url(#grid)"/>
+
+        <!-- Ocean background hint -->
+        <rect x="0" y="350" width="900" height="150" fill="rgba(27,79,114,0.12)" rx="0"/>
+        <path d="M0,360 Q150,340 300,360 Q450,380 600,360 Q750,340 900,360 L900,500 L0,500 Z" fill="rgba(27,79,114,0.18)"/>
+
+        <!-- Pinar hint -->
+        <ellipse cx="300" cy="200" rx="160" ry="100" fill="rgba(45,106,79,0.12)"/>
+        <!-- Marisma hint -->
+        <ellipse cx="580" cy="280" rx="120" ry="70" fill="rgba(46,134,193,0.1)"/>
+
+        <!-- Route path animated -->
+        <path id="routePath" d="M130,350 C180,320 220,260 280,220 C340,180 380,190 440,200 C500,210 540,260 580,270 C640,285 700,310 760,340 C800,360 820,370 840,360" 
+              stroke="url(#routeGrad)" stroke-width="3" fill="none" 
+              stroke-dasharray="1200" stroke-dashoffset="1200"
+              filter="url(#glow)" stroke-linecap="round"/>
+
+        <!-- Return path dashed -->
+        <path d="M840,360 C820,400 740,430 650,420 C540,408 400,390 280,380 C200,373 160,365 130,350" 
+              stroke="rgba(212,172,13,0.4)" stroke-width="2" fill="none" stroke-dasharray="8 6" stroke-linecap="round"/>
+
+        <!-- Labels background areas -->
+        <text x="260" y="165" font-family="DM Sans, sans-serif" font-size="11" fill="rgba(149,213,178,0.5)" text-anchor="middle" letter-spacing="2">PINAR DE DOÑANA</text>
+        <text x="580" y="240" font-family="DM Sans, sans-serif" font-size="11" fill="rgba(174,214,241,0.5)" text-anchor="middle" letter-spacing="2">MARISMAS</text>
+        <text x="430" y="455" font-family="DM Sans, sans-serif" font-size="11" fill="rgba(46,134,193,0.5)" text-anchor="middle" letter-spacing="2">OCÉANO ATLÁNTICO</text>
+
+        <!-- STOP 1: Matalascañas -->
+        <g class="map-point" data-stop="1" data-x="130" data-y="350">
+          <circle cx="130" cy="350" r="22" fill="rgba(45,106,79,0.2)" stroke="rgba(82,183,136,0.3)" stroke-width="1"/>
+          <circle cx="130" cy="350" r="12" fill="#2D6A4F" stroke="#52B788" stroke-width="2"/>
+          <circle cx="130" cy="350" r="20" fill="none" stroke="rgba(82,183,136,0.5)" stroke-width="1" class="pulse-ring"/>
+          <text class="map-num" x="130" y="350">1</text>
+          <text class="map-label" x="130" y="378">Matalascañas</text>
+          <text font-family="DM Sans, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)" x="130" y="392" text-anchor="middle">07:00 · km 0</text>
+        </g>
+
+        <!-- STOP 2: Pinares -->
+        <g class="map-point" data-stop="2" data-x="280" data-y="220">
+          <circle cx="280" cy="220" r="22" fill="rgba(45,106,79,0.2)" stroke="rgba(82,183,136,0.3)" stroke-width="1"/>
+          <circle cx="280" cy="220" r="12" fill="#2D6A4F" stroke="#52B788" stroke-width="2"/>
+          <text class="map-num" x="280" y="220">2</text>
+          <text class="map-label" x="280" y="248">Pinares Doñana</text>
+          <text font-family="DM Sans, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)" x="280" y="262" text-anchor="middle">09:30 · km 15</text>
+        </g>
+
+        <!-- STOP 3: Marismas -->
+        <g class="map-point" data-stop="3" data-x="490" data-y="205">
+          <circle cx="490" cy="205" r="22" fill="rgba(27,79,114,0.25)" stroke="rgba(46,134,193,0.4)" stroke-width="1"/>
+          <circle cx="490" cy="205" r="12" fill="#1B4F72" stroke="#2E86C1" stroke-width="2"/>
+          <text class="map-num" x="490" y="205" fill="white">3</text>
+          <text class="map-label" x="490" y="233">Marismas</text>
+          <text font-family="DM Sans, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)" x="490" y="247" text-anchor="middle">11:30 · km 28</text>
+        </g>
+
+        <!-- STOP 4: Cuesta Maneli -->
+        <g class="map-point" data-stop="4" data-x="690" data-y="310">
+          <circle cx="690" cy="310" r="22" fill="rgba(212,172,13,0.15)" stroke="rgba(212,172,13,0.4)" stroke-width="1"/>
+          <circle cx="690" cy="310" r="12" fill="#7D6608" stroke="#D4AC0D" stroke-width="2"/>
+          <text class="map-num" x="690" y="310" fill="white">4</text>
+          <text class="map-label" x="690" y="338">Cuesta Maneli</text>
+          <text font-family="DM Sans, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)" x="690" y="352" text-anchor="middle">13:30 · km 40</text>
+        </g>
+
+        <!-- STOP 5: Return coast -->
+        <g class="map-point" data-stop="5" data-x="840" data-y="360">
+          <circle cx="840" cy="360" r="22" fill="rgba(212,172,13,0.2)" stroke="rgba(212,172,13,0.5)" stroke-width="1"/>
+          <circle cx="840" cy="360" r="12" fill="#7D6608" stroke="#D4AC0D" stroke-width="2"/>
+          <text class="map-num" x="840" y="360" fill="white">5</text>
+          <text class="map-label" x="840" y="388">Costa · Atardecer</text>
+          <text font-family="DM Sans, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)" x="840" y="402" text-anchor="middle">16:30 · km 52</text>
+        </g>
+
+        <!-- Distance markers -->
+        <g opacity="0.4">
+          <circle cx="200" cy="295" r="2" fill="#52B788"/>
+          <text font-family="Space Mono, monospace" font-size="9" fill="rgba(255,255,255,0.4)" x="210" y="298">km 7</text>
+          <circle cx="380" cy="196" r="2" fill="#52B788"/>
+          <text font-family="Space Mono, monospace" font-size="9" fill="rgba(255,255,255,0.4)" x="390" y="199">km 22</text>
+          <circle cx="600" cy="273" r="2" fill="#2E86C1"/>
+          <text font-family="Space Mono, monospace" font-size="9" fill="rgba(255,255,255,0.4)" x="610" y="276">km 35</text>
+          <circle cx="770" cy="344" r="2" fill="#D4AC0D"/>
+          <text font-family="Space Mono, monospace" font-size="9" fill="rgba(255,255,255,0.4)" x="780" y="347">km 47</text>
+        </g>
+
+        <!-- Compass -->
+        <g transform="translate(54, 54)">
+          <circle r="28" fill="rgba(0,0,0,0.5)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <text font-family="Space Mono, monospace" font-size="9" fill="rgba(255,255,255,0.6)" text-anchor="middle" y="-14">N</text>
+          <text font-family="Space Mono, monospace" font-size="9" fill="rgba(255,255,255,0.3)" text-anchor="middle" y="20">S</text>
+          <text font-family="Space Mono, monospace" font-size="9" fill="rgba(255,255,255,0.3)" x="18" y="4">E</text>
+          <text font-family="Space Mono, monospace" font-size="9" fill="rgba(255,255,255,0.3)" x="-18" y="4">O</text>
+          <line x1="0" y1="-18" x2="0" y2="18" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
+          <line x1="-18" y1="0" x2="18" y2="0" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
+          <polygon points="0,-14 3,-4 0,0 -3,-4" fill="#52B788"/>
+          <polygon points="0,14 3,4 0,0 -3,4" fill="rgba(255,255,255,0.3)"/>
+          <circle r="3" fill="white"/>
+        </g>
+      </svg>
+
+      <!-- Map tooltip -->
+      <div class="map-tooltip" id="mapTooltip">
+        <div class="map-tooltip-title" id="tooltipTitle"></div>
+        <div class="map-tooltip-info" id="tooltipInfo"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PARADAS ===== -->
+<div id="paradas">
+
+<!-- PARADA 1: Matalascañas -->
+<section class="stop-section">
+  <div class="container">
+    <div class="stop-number">01</div>
+    <div class="stop-grid reveal">
+      <div class="stop-visual">
+        <svg class="stop-illustration" viewBox="0 0 600 450" xmlns="http://www.w3.org/2000/svg">
+          <!-- Sky gradient dawn -->
+          <defs>
+            <linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#FF6B35"/>
+              <stop offset="30%" stop-color="#F7C59F"/>
+              <stop offset="70%" stop-color="#87CEEB"/>
+              <stop offset="100%" stop-color="#4ECDC4"/>
+            </linearGradient>
+            <linearGradient id="sea1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#2E86AB"/>
+              <stop offset="100%" stop-color="#1B4F72"/>
+            </linearGradient>
+            <radialGradient id="sun1" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#FFD700" stop-opacity="1"/>
+              <stop offset="40%" stop-color="#FFA500" stop-opacity="0.8"/>
+              <stop offset="100%" stop-color="#FF6B35" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect width="600" height="450" fill="url(#sky1)"/>
+          <!-- Sun -->
+          <circle cx="300" cy="140" r="50" fill="url(#sun1)" opacity="0.9"/>
+          <circle cx="300" cy="140" r="35" fill="#FFD700" opacity="0.95"/>
+          <!-- Sun rays -->
+          <g opacity="0.3" stroke="#FFD700" stroke-width="1.5">
+            <line x1="300" y1="85" x2="300" y2="70"/>
+            <line x1="300" y1="195" x2="300" y2="210"/>
+            <line x1="245" y1="140" x2="230" y2="140"/>
+            <line x1="355" y1="140" x2="370" y2="140"/>
+            <line x1="261" y1="101" x2="250" y2="90"/>
+            <line x1="339" y1="101" x2="350" y2="90"/>
+            <line x1="261" y1="179" x2="250" y2="190"/>
+            <line x1="339" y1="179" x2="350" y2="190"/>
+          </g>
+          <!-- Sea -->
+          <rect x="0" y="280" width="600" height="170" fill="url(#sea1)"/>
+          <!-- Waves -->
+          <path d="M0,295 Q60,285 120,295 Q180,305 240,295 Q300,285 360,295 Q420,305 480,295 Q540,285 600,295" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+          <path d="M0,315 Q80,305 160,315 Q240,325 320,315 Q400,305 480,315 Q560,325 600,320" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+          <!-- Beach -->
+          <path d="M0,280 Q150,270 300,275 Q450,280 600,272 L600,300 L0,300 Z" fill="#F4E4BC"/>
+          <!-- Promenade -->
+          <rect x="0" y="260" width="600" height="22" fill="#C8B496" rx="0"/>
+          <rect x="0" y="260" width="600" height="4" fill="#D4C4A0"/>
+          <!-- Bollards -->
+          <g fill="#8B7355">
+            <rect x="40" y="250" width="6" height="18" rx="3"/>
+            <rect x="100" y="250" width="6" height="18" rx="3"/>
+            <rect x="160" y="250" width="6" height="18" rx="3"/>
+            <rect x="220" y="250" width="6" height="18" rx="3"/>
+            <rect x="280" y="250" width="6" height="18" rx="3"/>
+            <rect x="340" y="250" width="6" height="18" rx="3"/>
+            <rect x="400" y="250" width="6" height="18" rx="3"/>
+            <rect x="460" y="250" width="6" height="18" rx="3"/>
+            <rect x="520" y="250" width="6" height="18" rx="3"/>
+          </g>
+          <!-- Palm trees -->
+          <g>
+            <rect x="68" y="200" width="6" height="60" fill="#6B4E2C" rx="3"/>
+            <ellipse cx="71" cy="198" rx="25" ry="15" fill="#2D6A4F" opacity="0.9"/>
+            <ellipse cx="52" cy="205" rx="22" ry="10" fill="#2D6A4F" opacity="0.8" transform="rotate(-30 52 205)"/>
+            <ellipse cx="90" cy="205" rx="22" ry="10" fill="#52B788" opacity="0.8" transform="rotate(30 90 205)"/>
+          </g>
+          <g>
+            <rect x="510" y="195" width="6" height="65" fill="#6B4E2C" rx="3"/>
+            <ellipse cx="513" cy="193" rx="28" ry="16" fill="#2D6A4F" opacity="0.9"/>
+            <ellipse cx="492" cy="202" rx="24" ry="11" fill="#2D6A4F" opacity="0.8" transform="rotate(-25 492 202)"/>
+            <ellipse cx="534" cy="202" rx="24" ry="11" fill="#52B788" opacity="0.8" transform="rotate(25 534 202)"/>
+          </g>
+          <!-- Cyclist silhouette -->
+          <g transform="translate(260, 240)" opacity="0.85">
+            <circle cx="20" cy="-28" r="8" fill="#2D3748"/>
+            <line x1="20" y1="-20" x2="20" y2="-6" stroke="#2D3748" stroke-width="3"/>
+            <line x1="8" y1="-14" x2="32" y2="-14" stroke="#2D3748" stroke-width="2"/>
+            <line x1="20" y1="-6" x2="10" y2="4" stroke="#2D3748" stroke-width="2"/>
+            <line x1="20" y1="-6" x2="30" y2="4" stroke="#2D3748" stroke-width="2"/>
+            <!-- Bike -->
+            <circle cx="10" cy="8" r="8" fill="none" stroke="#52B788" stroke-width="2"/>
+            <circle cx="34" cy="8" r="8" fill="none" stroke="#52B788" stroke-width="2"/>
+            <line x1="10" y1="8" x2="22" y2="-2" stroke="#52B788" stroke-width="1.5"/>
+            <line x1="34" y1="8" x2="22" y2="-2" stroke="#52B788" stroke-width="1.5"/>
+            <line x1="22" y1="-2" x2="20" y2="-6" stroke="#52B788" stroke-width="1.5"/>
+          </g>
+          <!-- Light glow on water -->
+          <ellipse cx="300" cy="290" rx="120" ry="20" fill="rgba(255,200,50,0.2)"/>
+          <!-- Text overlay -->
+          <rect x="0" y="395" width="600" height="55" fill="rgba(0,0,0,0.5)"/>
+          <text x="20" y="422" font-family="Playfair Display, serif" font-size="18" fill="white" font-style="italic">Matalascañas al amanecer</text>
+          <text x="20" y="440" font-family="DM Sans, sans-serif" font-size="12" fill="rgba(255,255,255,0.6)">Paseo Marítimo · Huelva</text>
+        </svg>
+        <div class="stop-time-badge">☀️ 07:00 — Salida</div>
+        <div class="stop-km-badge">km 0</div>
+      </div>
+
+      <div class="stop-info">
+        <div class="stop-tag">🌅 Parada 01</div>
+        <h2 class="stop-title">Matalascañas<br>al amanecer</h2>
+        <p class="stop-desc">El viaje comienza con el sol naciendo sobre el Atlántico. La brisa marina, el olor a salitre y los primeros rayos dorando la arena marcan el inicio de una jornada memorable por uno de los espacios naturales más singulares de Europa.</p>
+
+        <div class="eco-tabs">
+          <button class="eco-tab active" onclick="switchTab(this, 'eco1')">🌍 Ecosistema</button>
+          <button class="eco-tab" onclick="switchTab(this, 'bio1')">🪨 Biotopo</button>
+          <button class="eco-tab" onclick="switchTab(this, 'spec1')">🐦 Biocenosis</button>
+          <button class="eco-tab" onclick="switchTab(this, 'rel1')">🔄 Relaciones</button>
+        </div>
+
+        <div class="eco-panel active" id="eco1">
+          <div class="eco-content">
+            <div class="eco-title">🌊 Ecosistema Costero Atlántico</div>
+            <p style="color:var(--gris); font-size:0.85rem; line-height:1.6">Sistema dunar activo con playa de arena fina, cordones litorales y zona intermareal. Una de las costas más extensas y mejor conservadas de la Península Ibérica, protegida dentro del Espacio Natural de Doñana.</p>
+            <div class="eco-chips" style="margin-top:12px">
+              <span class="eco-chip">Costa atlántica</span>
+              <span class="eco-chip">Sistema dunar</span>
+              <span class="eco-chip">Zona intermareal</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="eco-panel" id="bio1">
+          <div class="eco-content">
+            <div class="eco-title">🪨 Datos del Biotopo</div>
+            <div class="biodata-grid">
+              <div class="biodata-item">
+                <div class="biodata-label">Tipo de suelo</div>
+                <div class="biodata-val">Arena silícea</div>
+              </div>
+              <div class="biodata-item">
+                <div class="biodata-label">Salinidad</div>
+                <div class="biodata-val">Alta · 35 g/L</div>
+              </div>
+              <div class="biodata-item">
+                <div class="biodata-label">Temperatura</div>
+                <div class="biodata-val">20–28°C (verano)</div>
+              </div>
+              <div class="biodata-item">
+                <div class="biodata-label">Viento</div>
+                <div class="biodata-val">Poniente · O–SO</div>
+              </div>
+              <div class="biodata-item">
+                <div class="biodata-label">Relieve</div>
+                <div class="biodata-val">Plano · 0–12m</div>
+              </div>
+              <div class="biodata-item">
+                <div class="biodata-label">Humedad</div>
+                <div class="biodata-val">Alta · 75–85%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="eco-panel" id="spec1">
+          <div class="eco-content">
+            <div class="eco-title">🐾 Seres Vivos</div>
+            <div class="species-grid">
+              <div class="species-item"><span class="species-emoji">🦅</span><div><div class="species-name">Gaviota patiamarilla</div><div class="species-type">Ave costera</div></div></div>
+              <div class="species-item"><span class="species-emoji">🐟</span><div><div class="species-name">Dorada · Lubina</div><div class="species-type">Peces marinos</div></div></div>
+              <div class="species-item"><span class="species-emoji">🦀</span><div><div class="species-name">Cangrejo soldado</div><div class="species-type">Crustáceo</div></div></div>
+              <div class="species-item"><span class="species-emoji">🌾</span><div><div class="species-name">Barrón (Ammophila)</div><div class="species-type">Planta dunar</div></div></div>
+              <div class="species-item"><span class="species-emoji">🐚</span><div><div class="species-name">Berberecho · Almeja</div><div class="species-type">Moluscos</div></div></div>
+              <div class="species-item"><span class="species-emoji">🦭</span><div><div class="species-name">Delfín mular</div><div class="species-type">Mamífero marino</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="eco-panel" id="rel1">
+          <div class="eco-content">
+            <div class="eco-title">🔄 Interacciones Ecológicas</div>
+            <div class="relations-flow">
+              <div class="relation-item"><span class="relation-type">Depredación</span> Gaviota caza cangrejos en la orilla</div>
+              <div class="relation-item"><span class="relation-type">Competencia</span> Gaviotas vs cormoranes por zonas de pesca</div>
+              <div class="relation-item"><span class="relation-type">Mutualismo</span> Barrón fija dunas → refugio para invertebrados</div>
+              <div class="relation-item"><span class="relation-type">Cadena trófica</span> Fitoplancton → Peces → Delfines</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARADA 2: Pinares -->
+<section class="stop-section">
+  <div class="container">
+    <div class="stop-number">02</div>
+    <div class="stop-grid reverse reveal">
+      <div class="stop-visual">
+        <svg class="stop-illustration" viewBox="0 0 600 450" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#87CEEB"/>
+              <stop offset="100%" stop-color="#C8E6C9"/>
+            </linearGradient>
+            <linearGradient id="ground2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#8B6914"/>
+              <stop offset="100%" stop-color="#6B4E2C"/>
+            </linearGradient>
+          </defs>
+          <rect width="600" height="450" fill="url(#sky2)"/>
+          <!-- Ground -->
+          <rect x="0" y="360" width="600" height="90" fill="url(#ground2)"/>
+          <!-- Pine shadows on ground -->
+          <ellipse cx="120" cy="365" rx="35" ry="8" fill="rgba(0,0,0,0.2)"/>
+          <ellipse cx="280" cy="368" rx="40" ry="9" fill="rgba(0,0,0,0.2)"/>
+          <ellipse cx="440" cy="365" rx="35" ry="8" fill="rgba(0,0,0,0.2)"/>
+
+          <!-- Undergrowth -->
+          <path d="M0,355 Q100,345 200,355 Q300,365 400,355 Q500,345 600,355 L600,375 L0,375 Z" fill="#4A7C59" opacity="0.6"/>
+
+          <!-- Pine trees back row -->
+          <g opacity="0.5">
+            <g transform="translate(60,100)">
+              <rect x="-4" y="180" width="8" height="80" fill="#5C3D11"/>
+              <polygon points="0,0 -40,180 40,180" fill="#1B4D2E"/>
+              <polygon points="0,40 -35,180 35,180" fill="#2D6A4F"/>
+              <polygon points="0,80 -28,180 28,180" fill="#52B788"/>
+            </g>
+            <g transform="translate(540,80)">
+              <rect x="-4" y="200" width="8" height="80" fill="#5C3D11"/>
+              <polygon points="0,0 -38,200 38,200" fill="#1B4D2E"/>
+              <polygon points="0,40 -32,200 32,200" fill="#2D6A4F"/>
+              <polygon points="0,80 -26,200 26,200" fill="#52B788"/>
+            </g>
+          </g>
+
+          <!-- Main pine trees -->
+          <g transform="translate(150,60)">
+            <rect x="-5" y="200" width="10" height="100" fill="#6B4E2C" rx="2"/>
+            <polygon points="0,0 -55,200 55,200" fill="#1B4D2E"/>
+            <polygon points="0,50 -48,200 48,200" fill="#2D6A4F"/>
+            <polygon points="0,100 -40,200 40,200" fill="#3A8A62"/>
+            <polygon points="0,140 -30,200 30,200" fill="#52B788"/>
+          </g>
+          <g transform="translate(310,40)">
+            <rect x="-5" y="220" width="10" height="100" fill="#6B4E2C" rx="2"/>
+            <polygon points="0,0 -58,220 58,220" fill="#155724"/>
+            <polygon points="0,55 -50,220 50,220" fill="#1E7A40"/>
+            <polygon points="0,110 -42,220 42,220" fill="#2D6A4F"/>
+            <polygon points="0,155 -32,220 32,220" fill="#52B788"/>
+          </g>
+          <g transform="translate(460,70)">
+            <rect x="-5" y="210" width="10" height="90" fill="#6B4E2C" rx="2"/>
+            <polygon points="0,0 -52,210 52,210" fill="#1B4D2E"/>
+            <polygon points="0,50 -44,210 44,210" fill="#2D6A4F"/>
+            <polygon points="0,100 -36,210 36,210" fill="#3A8A62"/>
+            <polygon points="0,145 -26,210 26,210" fill="#52B788"/>
+          </g>
+
+          <!-- Light rays through trees -->
+          <path d="M310,0 L240,365" stroke="rgba(255,220,100,0.15)" stroke-width="25" fill="none"/>
+          <path d="M350,0 L420,365" stroke="rgba(255,220,100,0.1)" stroke-width="20" fill="none"/>
+
+          <!-- Dirt path -->
+          <path d="M0,370 Q150,355 300,362 Q450,369 600,358" stroke="#A0785A" stroke-width="20" fill="none" stroke-linecap="round" opacity="0.8"/>
+          <path d="M0,368 Q150,354 300,361 Q450,368 600,357" stroke="#C4956A" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="15 8" opacity="0.5"/>
+
+          <!-- Birds -->
+          <g fill="none" stroke="#333" stroke-width="1.5">
+            <path d="M200,120 Q206,116 212,120"/>
+            <path d="M220,110 Q226,106 232,110"/>
+            <path d="M180,105 Q186,101 192,105"/>
+          </g>
+
+          <!-- Pine cones on ground -->
+          <ellipse cx="100" cy="363" rx="5" ry="3" fill="#8B4513"/>
+          <ellipse cx="200" cy="367" rx="4" ry="2.5" fill="#8B4513"/>
+          <ellipse cx="350" cy="364" rx="5" ry="3" fill="#6B3410"/>
+
+          <!-- Mushrooms -->
+          <g transform="translate(80, 358)">
+            <rect x="-2" y="0" width="4" height="6" fill="#F5F5DC" rx="1"/>
+            <ellipse cx="0" cy="0" rx="7" ry="4" fill="#C0392B"/>
+            <ellipse cx="2" cy="-1" rx="2" ry="1" fill="rgba(255,255,255,0.6)"/>
+          </g>
+
+          <rect x="0" y="395" width="600" height="55" fill="rgba(0,0,0,0.45)"/>
+          <text x="20" y="422" font-family="Playfair Display, serif" font-size="18" fill="white" font-style="italic">Pinares de Doñana</text>
+          <text x="20" y="440" font-family="DM Sans, sans-serif" font-size="12" fill="rgba(255,255,255,0.6)">Bosque mediterráneo · km 15</text>
+        </svg>
+        <div class="stop-time-badge">🌲 09:30 — Pinares</div>
+        <div class="stop-km-badge">km 15</div>
+      </div>
+
+      <div class="stop-info">
+        <div class="stop-tag">🌲 Parada 02</div>
+        <h2 class="stop-title">Pinares de<br>Doñana</h2>
+        <p class="stop-desc">A las 9:30 te adentras en uno de los bosques más extensos del litoral atlántico europeo. El silencio solo se rompe por el canto de las aves y el suave crujido de las piñas bajo las ruedas. La sombra de los pinos y el olor a resina hacen del pedaleo una experiencia meditativa.</p>
+
+        <div class="eco-tabs">
+          <button class="eco-tab active" onclick="switchTab(this, 'eco2')">🌍 Ecosistema</button>
+          <button class="eco-tab" onclick="switchTab(this, 'bio2')">🪨 Biotopo</button>
+          <button class="eco-tab" onclick="switchTab(this, 'spec2')">🐦 Biocenosis</button>
+          <button class="eco-tab" onclick="switchTab(this, 'rel2')">🔄 Relaciones</button>
+        </div>
+
+        <div class="eco-panel active" id="eco2">
+          <div class="eco-content">
+            <div class="eco-title">🌲 Bosque Mediterráneo de Pinar</div>
+            <p style="color:var(--gris); font-size:0.85rem; line-height:1.6">Pinares de pino piñonero (Pinus pinea) y pino resinero (Pinus pinaster) plantados sobre suelos arenosos a partir del s. XVIII para fijar las dunas. Hoy constituyen un ecosistema maduro y biodiverso que alberga fauna emblemática como el lince ibérico.</p>
+            <div class="eco-chips" style="margin-top:12px">
+              <span class="eco-chip">Bosque mediterráneo</span>
+              <span class="eco-chip">Pinar litoral</span>
+              <span class="eco-chip">Flora endémica</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="eco-panel" id="bio2">
+          <div class="eco-content">
+            <div class="eco-title">🪨 Datos del Biotopo</div>
+            <div class="biodata-grid">
+              <div class="biodata-item"><div class="biodata-label">Suelo</div><div class="biodata-val">Arena podzólica</div></div>
+              <div class="biodata-item"><div class="biodata-label">pH suelo</div><div class="biodata-val">Ácido · 5.5–6.5</div></div>
+              <div class="biodata-item"><div class="biodata-label">Temperatura</div><div class="biodata-val">18–26°C interior</div></div>
+              <div class="biodata-item"><div class="biodata-label">Humedad</div><div class="biodata-val">Media · 55–70%</div></div>
+              <div class="biodata-item"><div class="biodata-label">Altura</div><div class="biodata-val">5–25 m s.n.m.</div></div>
+              <div class="biodata-item"><div class="biodata-label">Precipitación</div><div class="biodata-val">550–700 mm/año</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="eco-panel" id="spec2">
+          <div class="eco-content">
+            <div class="eco-title">🐾 Seres Vivos</div>
+            <div class="species-grid">
+              <div class="species-item"><span class="species-emoji">🐆</span><div><div class="species-name">Lince ibérico</div><div class="species-type">Mamífero — EN</div></div></div>
+              <div class="species-item"><span class="species-emoji">🦅</span><div><div class="species-name">Águila imperial</div><div class="species-type">Ave rapaz — EN</div></div></div>
+              <div class="species-item"><span class="species-emoji">🦊</span><div><div class="species-name">Zorro rojo</div><div class="species-type">Mamífero</div></div></div>
+              <div class="species-item"><span class="species-emoji">🌰</span><div><div class="species-name">Pino piñonero</div><div class="species-type">Árbol dominante</div></div></div>
+              <div class="species-item"><span class="species-emoji">🍄</span><div><div class="species-name">Boletus edulis</div><div class="species-type">Hongo</div></div></div>
+              <div class="species-item"><span class="species-emoji">🐇</span><div><div class="species-name">Conejo de campo</div><div class="species-type">Mamífero</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="eco-panel" id="rel2">
+          <div class="eco-content">
+            <div class="eco-title">🔄 Interacciones Ecológicas</div>
+            <div class="relations-flow">
+              <div class="relation-item"><span class="relation-type">Depredación</span> Lince ibérico caza principalmente conejo</div>
+              <div class="relation-item"><span class="relation-type">Simbiosis</span> Pino piñonero + Boletus: micorriza mutualista</div>
+              <div class="relation-item"><span class="relation-type">Dispersión</span> Arrendajos dispersan semillas de pino</div>
+              <div class="relation-item"><span class="relation-type">Competencia</span> Pino vs matorral por luz y espacio</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARADA 3: Marismas -->
+<section class="stop-section">
+  <div class="container">
+    <div class="stop-number">03</div>
+    <div class="stop-grid reveal">
+      <div class="stop-visual">
+        <svg class="stop-illustration" viewBox="0 0 600 450" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="sky3" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#5B9BD5"/>
+              <stop offset="60%" stop-color="#87CEEB"/>
+              <stop offset="100%" stop-color="#B0E0E6"/>
+            </linearGradient>
+            <linearGradient id="marsh" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4ECDC4"/>
+              <stop offset="40%" stop-color="#2E86AB"/>
+              <stop offset="100%" stop-color="#1B4F72"/>
+            </linearGradient>
+          </defs>
+          <rect width="600" height="450" fill="url(#sky3)"/>
+          
+          <!-- Clouds -->
+          <g opacity="0.8">
+            <ellipse cx="120" cy="80" rx="60" ry="25" fill="white"/>
+            <ellipse cx="160" cy="70" rx="50" ry="22" fill="white"/>
+            <ellipse cx="80" cy="85" rx="45" ry="20" fill="white"/>
+          </g>
+          <g opacity="0.6">
+            <ellipse cx="450" cy="60" rx="55" ry="22" fill="white"/>
+            <ellipse cx="490" cy="52" rx="45" ry="18" fill="white"/>
+            <ellipse cx="420" cy="65" rx="40" ry="16" fill="white"/>
+          </g>
+
+          <!-- Marsh water -->
+          <rect x="0" y="280" width="600" height="170" fill="url(#marsh)"/>
+          
+          <!-- Water reflections -->
+          <path d="M0,300 Q100,290 200,300 Q300,310 400,300 Q500,290 600,300" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+          <path d="M0,325 Q120,315 240,325 Q360,335 480,325 Q560,318 600,322" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+
+          <!-- Land islands -->
+          <ellipse cx="180" cy="280" rx="100" ry="15" fill="#5A7A45"/>
+          <ellipse cx="430" cy="285" rx="80" ry="12" fill="#4A6A35"/>
+
+          <!-- Grasses / reeds on banks -->
+          <g stroke="#6B8E23" stroke-width="2" fill="none">
+            <line x1="90" y1="270" x2="88" y2="245"/> <line x1="100" y1="268" x2="102" y2="243"/>
+            <line x1="110" y1="272" x2="108" y2="246"/> <line x1="120" y1="269" x2="122" y2="244"/>
+            <line x1="130" y1="271" x2="128" y2="247"/> <line x1="140" y1="268" x2="142" y2="242"/>
+            <line x1="150" y1="272" x2="148" y2="246"/> <line x1="160" y1="270" x2="162" y2="244"/>
+            <line x1="170" y1="268" x2="172" y2="243"/> <line x1="180" y1="272" x2="178" y2="246"/>
+            <line x1="190" y1="269" x2="192" y2="243"/> <line x1="200" y1="271" x2="198" y2="247"/>
+            <line x1="210" y1="268" x2="212" y2="243"/> <line x1="220" y1="270" x2="218" y2="246"/>
+            <line x1="230" y1="272" x2="232" y2="247"/> <line x1="240" y1="268" x2="242" y2="243"/>
+            <line x1="250" y1="270" x2="248" y2="245"/>
+          </g>
+          <!-- Seed tops on reeds -->
+          <g fill="#8B7355">
+            <ellipse cx="88" cy="244" rx="3" ry="6"/>
+            <ellipse cx="102" cy="242" rx="3" ry="6"/>
+            <ellipse cx="108" cy="245" rx="3" ry="6"/>
+            <ellipse cx="122" cy="243" rx="3" ry="6"/>
+            <ellipse cx="128" cy="246" rx="3" ry="6"/>
+            <ellipse cx="142" cy="241" rx="3" ry="6"/>
+            <ellipse cx="148" cy="245" rx="3" ry="6"/>
+          </g>
+
+          <!-- Flamingos! -->
+          <!-- Flamingo 1 -->
+          <g transform="translate(300, 295)">
+            <line x1="0" y1="0" x2="2" y2="-45" stroke="#FF6B8A" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="2" y1="-45" x2="10" y2="-38" stroke="#FF6B8A" stroke-width="2" stroke-linecap="round"/>
+            <ellipse cx="10" cy="-50" rx="12" ry="8" fill="#FF8FAB" transform="rotate(-20 10 -50)"/>
+            <circle cx="14" cy="-58" r="6" fill="#FFB3C6"/>
+            <path d="M16,-56 Q22,-52 18,-50 Q14,-52 16,-56" fill="#FF6B35"/>
+            <!-- Leg in water -->
+            <line x1="-2" y1="0" x2="-1" y2="15" stroke="#FF8FAB" stroke-width="1.5"/>
+          </g>
+          <!-- Flamingo 2 -->
+          <g transform="translate(340, 290)">
+            <line x1="0" y1="0" x2="-2" y2="-40" stroke="#FF6B8A" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="-2" y1="-40" x2="6" y2="-34" stroke="#FF6B8A" stroke-width="2" stroke-linecap="round"/>
+            <ellipse cx="5" cy="-45" rx="11" ry="7" fill="#FF8FAB" transform="rotate(-15 5 -45)"/>
+            <circle cx="9" cy="-52" r="5.5" fill="#FFB3C6"/>
+            <path d="M11,-50 Q17,-46 13,-44 Q9,-46 11,-50" fill="#FF6B35"/>
+          </g>
+          <!-- Flamingo 3 smaller/further -->
+          <g transform="translate(380, 300)" opacity="0.7">
+            <line x1="0" y1="0" x2="0" y2="-32" stroke="#FF6B8A" stroke-width="2" stroke-linecap="round"/>
+            <ellipse cx="4" cy="-37" rx="9" ry="6" fill="#FF8FAB" transform="rotate(-20 4 -37)"/>
+            <circle cx="7" cy="-43" r="4.5" fill="#FFB3C6"/>
+          </g>
+
+          <!-- Heron -->
+          <g transform="translate(420, 285)">
+            <line x1="0" y1="0" x2="2" y2="-50" stroke="#7F8C8D" stroke-width="2"/>
+            <ellipse cx="4" cy="-58" rx="8" ry="5" fill="#95A5A6"/>
+            <circle cx="6" cy="-63" r="5" fill="#BDC3C7"/>
+            <line x1="7" y1="-61" x2="16" y2="-59" stroke="#E67E22" stroke-width="1.5"/>
+          </g>
+
+          <!-- Water lily pads -->
+          <g opacity="0.7">
+            <ellipse cx="50" cy="310" rx="18" ry="10" fill="#2D6A4F"/>
+            <ellipse cx="500" cy="320" rx="15" ry="8" fill="#2D6A4F"/>
+            <ellipse cx="550" cy="305" rx="12" ry="7" fill="#2D6A4F"/>
+          </g>
+
+          <!-- Reflection of sky in water -->
+          <path d="M0,285 L600,285 L600,295 L0,295 Z" fill="rgba(135,206,235,0.2)"/>
+
+          <rect x="0" y="395" width="600" height="55" fill="rgba(0,0,0,0.5)"/>
+          <text x="20" y="422" font-family="Playfair Display, serif" font-size="18" fill="white" font-style="italic">Marismas del Parque de Doñana</text>
+          <text x="20" y="440" font-family="DM Sans, sans-serif" font-size="12" fill="rgba(255,255,255,0.6)">Humedal internacional · Ramsar · km 28</text>
+        </svg>
+        <div class="stop-time-badge">🦩 11:30 — Marismas</div>
+        <div class="stop-km-badge">km 28</div>
+      </div>
+
+      <div class="stop-info">
+        <div class="stop-tag">🦩 Parada 03</div>
+        <h2 class="stop-title">Marismas de<br>Doñana</h2>
+        <p class="stop-desc">Al llegar a las marismas, el silencio se llena de sonidos de vida: el batir de alas de miles de flamencos, el chapoteo de garzas y el reflejo perfecto del cielo en aguas inmóviles. Este humedal, uno de los más importantes del mundo, acoge cada año a más de 6 millones de aves migratorias.</p>
+
+        <div class="eco-tabs">
+          <button class="eco-tab active" onclick="switchTab(this, 'eco3')">🌍 Ecosistema</button>
+          <button class="eco-tab" onclick="switchTab(this, 'bio3')">🪨 Biotopo</button>
+          <button class="eco-tab" onclick="switchTab(this, 'spec3')">🦩 Biocenosis</button>
+          <button class="eco-tab" onclick="switchTab(this, 'rel3')">🔄 Relaciones</button>
+        </div>
+
+        <div class="eco-panel active" id="eco3">
+          <div class="eco-content">
+            <div class="eco-title">💧 Ecosistema de Humedal · Marisma</div>
+            <p style="color:var(--gris); font-size:0.85rem; line-height:1.6">Las marismas de Doñana son la zona húmeda más extensa de Europa occidental, con más de 50.000 ha de superficie inundable. Patrimonio de la Humanidad (UNESCO) y zona Ramsar. En verano, la lámina de agua retrocede concentrando fauna en las «lucios» permanentes.</p>
+            <div class="eco-chips" style="margin-top:12px">
+              <span class="eco-chip">Humedal Ramsar</span>
+              <span class="eco-chip">UNESCO</span>
+              <span class="eco-chip">Migración</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="eco-panel" id="bio3">
+          <div class="eco-content">
+            <div class="eco-title">🪨 Datos del Biotopo</div>
+            <div class="biodata-grid">
+              <div class="biodata-item"><div class="biodata-label">Suelo</div><div class="biodata-val">Arcilla aluvial</div></div>
+              <div class="biodata-item"><div class="biodata-label">Salinidad</div><div class="biodata-val">Variable · 0–15 g/L</div></div>
+              <div class="biodata-item"><div class="biodata-label">Profundidad</div><div class="biodata-val">0.2–1.5 m</div></div>
+              <div class="biodata-item"><div class="biodata-label">Temperatura agua</div><div class="biodata-val">18–30°C (verano)</div></div>
+              <div class="biodata-item"><div class="biodata-label">Inundación</div><div class="biodata-val">Oct–Mayo</div></div>
+              <div class="biodata-item"><div class="biodata-label">Altitud</div><div class="biodata-val">0–2 m s.n.m.</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="eco-panel" id="spec3">
+          <div class="eco-content">
+            <div class="eco-title">🐾 Seres Vivos</div>
+            <div class="species-grid">
+              <div class="species-item"><span class="species-emoji">🦩</span><div><div class="species-name">Flamenco rosa</div><div class="species-type">Ave · 15.000 parejas</div></div></div>
+              <div class="species-item"><span class="species-emoji">🦢</span><div><div class="species-name">Espátula común</div><div class="species-type">Ave · EN</div></div></div>
+              <div class="species-item"><span class="species-emoji">🐊</span><div><div class="species-name">Galápago leproso</div><div class="species-type">Reptil</div></div></div>
+              <div class="species-item"><span class="species-emoji">🐸</span><div><div class="species-name">Tritón jaspeado</div><div class="species-type">Anfibio</div></div></div>
+              <div class="species-item"><span class="species-emoji">🪷</span><div><div class="species-name">Castañuela</div><div class="species-type">Planta acuática</div></div></div>
+              <div class="species-item"><span class="species-emoji">🐟</span><div><div class="species-name">Carpa · Anguila</div><div class="species-type">Peces dulceacuícola</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="eco-panel" id="rel3">
+          <div class="eco-content">
+            <div class="eco-title">🔄 Interacciones Ecológicas</div>
+            <div class="relations-flow">
+              <div class="relation-item"><span class="relation-type">Filtración</span> Flamenco filtra algas del agua con su pico</div>
+              <div class="relation-item"><span class="relation-type">Depredación</span> Garza real embosca peces en aguas poco profundas</div>
+              <div class="relation-item"><span class="relation-type">Comensalismo</span> Garcillas aprovechan insectos que huyen del ganado</div>
+              <div class="relation-item"><span class="relation-type">Cadena trófica</span> Algas → Quisquilla → Flamenco → Águila</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARADA 4: Cuesta Maneli -->
+<section class="stop-section">
+  <div class="container">
+    <div class="stop-number">04</div>
+    <div class="stop-grid reverse reveal">
+      <div class="stop-visual">
+        <svg class="stop-illustration" viewBox="0 0 600 450" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="sky4" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1B6CA8"/>
+              <stop offset="60%" stop-color="#3A9AD9"/>
+              <stop offset="100%" stop-color="#87CEEB"/>
+            </linearGradient>
+            <linearGradient id="ocean4" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1A5C87"/>
+              <stop offset="100%" stop-color="#0D2E4A"/>
+            </linearGradient>
+            <linearGradient id="dune" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#E8D5A3"/>
+              <stop offset="100%" stop-color="#C4A97D"/>
+            </linearGradient>
+          </defs>
+          <rect width="600" height="450" fill="url(#sky4)"/>
+          
+          <!-- Ocean -->
+          <rect x="0" y="300" width="600" height="150" fill="url(#ocean4)"/>
+          
+          <!-- Waves -->
+          <path d="M0,310 Q75,298 150,310 Q225,322 300,310 Q375,298 450,310 Q525,322 600,310" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+          <path d="M0,330 Q100,320 200,330 Q300,340 400,330 Q500,320 600,330" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+          <path d="M0,350 Q90,342 180,350 Q270,358 360,350 Q450,342 540,350 Q570,353 600,350" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+
+          <!-- Large dune -->
+          <path d="M0,350 Q200,280 400,300 Q500,310 600,305 L600,450 L0,450 Z" fill="url(#dune)"/>
+          
+          <!-- Dune detail shadow -->
+          <path d="M0,380 Q150,365 300,375 Q450,385 600,378 L600,450 L0,450 Z" fill="rgba(0,0,0,0.12)"/>
+
+          <!-- Wooden walkway/pasarela -->
+          <g>
+            <!-- Rails -->
+            <line x1="120" y1="295" x2="480" y2="305" stroke="#8B6914" stroke-width="10" stroke-linecap="round"/>
+            <!-- Planks -->
+            <g stroke="#A0785A" stroke-width="8" stroke-linecap="round" opacity="0.9">
+              <line x1="130" y1="295" x2="130" y2="315"/>
+              <line x1="160" y1="296" x2="160" y2="316"/>
+              <line x1="190" y1="297" x2="190" y2="317"/>
+              <line x1="220" y1="297" x2="220" y2="317"/>
+              <line x1="250" y1="298" x2="250" y2="318"/>
+              <line x1="280" y1="299" x2="280" y2="319"/>
+              <line x1="310" y1="299" x2="310" y2="319"/>
+              <line x1="340" y1="300" x2="340" y2="320"/>
+              <line x1="370" y1="300" x2="370" y2="320"/>
+              <line x1="400" y1="301" x2="400" y2="321"/>
+              <line x1="430" y1="302" x2="430" y2="322"/>
+              <line x1="460" y1="303" x2="460" y2="323"/>
+            </g>
+            <!-- Bottom rail -->
+            <line x1="120" y1="315" x2="480" y2="322" stroke="#8B6914" stroke-width="10" stroke-linecap="round"/>
+          </g>
+
+          <!-- Dune grasses -->
+          <g stroke="#8B9E5A" stroke-width="1.5">
+            <line x1="60" y1="360" x2="55" y2="342"/> <line x1="65" y1="358" x2="68" y2="340"/>
+            <line x1="70" y1="355" x2="64" y2="338"/> <line x1="75" y1="360" x2="78" y2="341"/>
+            <line x1="500" y1="355" x2="495" y2="337"/> <line x1="510" y1="358" x2="513" y2="340"/>
+            <line x1="515" y1="353" x2="509" y2="336"/> <line x1="520" y1="357" x2="523" y2="339"/>
+          </g>
+
+          <!-- Pine on cliff edge -->
+          <g transform="translate(540, 250)">
+            <rect x="-3" y="50" width="6" height="50" fill="#5C3D11" rx="2"/>
+            <polygon points="0,0 -25,50 25,50" fill="#1B4D2E"/>
+            <polygon points="0,20 -20,50 20,50" fill="#2D6A4F"/>
+          </g>
+          <g transform="translate(58, 255)" opacity="0.8">
+            <rect x="-3" y="55" width="6" height="45" fill="#5C3D11" rx="2"/>
+            <polygon points="0,0 -22,55 22,55" fill="#1B4D2E"/>
+            <polygon points="0,22 -17,55 17,55" fill="#2D6A4F"/>
+          </g>
+
+          <!-- Seagull silhouettes -->
+          <g fill="white" opacity="0.8">
+            <path d="M200,150 Q205,145 210,150 Q215,145 220,150"/>
+            <path d="M250,130 Q256,124 262,130 Q268,124 274,130"/>
+            <path d="M320,120 Q326,115 332,120 Q338,115 344,120"/>
+          </g>
+
+          <!-- Sun glare on water -->
+          <ellipse cx="300" cy="318" rx="140" ry="12" fill="rgba(255,220,100,0.25)"/>
+
+          <!-- Viewpoint marker -->
+          <circle cx="300" cy="294" r="8" fill="#D4AC0D" opacity="0.9"/>
+          <circle cx="300" cy="294" r="14" fill="none" stroke="#D4AC0D" stroke-width="1.5" opacity="0.5"/>
+
+          <rect x="0" y="395" width="600" height="55" fill="rgba(0,0,0,0.5)"/>
+          <text x="20" y="422" font-family="Playfair Display, serif" font-size="18" fill="white" font-style="italic">Pasarelas de Cuesta Maneli</text>
+          <text x="20" y="440" font-family="DM Sans, sans-serif" font-size="12" fill="rgba(255,255,255,0.6)">Sistema dunar · Mirador atlántico · km 40</text>
+        </svg>
+        <div class="stop-time-badge">🌊 13:30 — Maneli</div>
+        <div class="stop-km-badge">km 40</div>
+      </div>
+
+      <div class="stop-info">
+        <div class="stop-tag">🌊 Parada 04</div>
+        <h2 class="stop-title">Cuesta Maneli<br>y las dunas</h2>
+        <p class="stop-desc">Las pasarelas de madera de Cuesta Maneli son el mirador más espectacular de toda la ruta. Desde las dunas vivas, la vista del Atlántico desde lo alto de los acantilados arenosos es absolutamente cinematográfica. El viento cálido, el olor a mar y la magnitud del paisaje se graban para siempre en la memoria.</p>
+
+        <div class="eco-tabs">
+          <button class="eco-tab active" onclick="switchTab(this, 'eco4')">🌍 Ecosistema</button>
+          <button class="eco-tab" onclick="switchTab(this, 'bio4')">🪨 Biotopo</button>
+          <button class="eco-tab" onclick="switchTab(this, 'spec4')">🌾 Biocenosis</button>
+          <button class="eco-tab" onclick="switchTab(this, 'rel4')">🔄 Relaciones</button>
+        </div>
+
+        <div class="eco-panel active" id="eco4">
+          <div class="eco-content">
+            <div class="eco-title">🏜️ Sistema Dunar Litoral</div>
+            <p style="color:var(--gris); font-size:0.85rem; line-height:1.6">El sistema dunar de Doñana es uno de los más activos y extensos de Europa, con dunas móviles que avanzan hasta 6 metros al año hacia el interior. Las dunas actúan como barreras naturales frente al mar y como acuíferos que alimentan los humedales.</p>
+            <div class="eco-chips" style="margin-top:12px">
+              <span class="eco-chip">Sistema dunar activo</span>
+              <span class="eco-chip">Acantilados</span>
+              <span class="eco-chip">Viento dominante</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="eco-panel" id="bio4">
+          <div class="eco-content">
+            <div class="eco-title">🪨 Datos del Biotopo</div>
+            <div class="biodata-grid">
+              <div class="biodata-item"><div class="biodata-label">Suelo</div><div class="biodata-val">Arena silícea fina</div></div>
+              <div class="biodata-item"><div class="biodata-label">Velocidad duna</div><div class="biodata-val">4–6 m/año</div></div>
+              <div class="biodata-item"><div class="biodata-label">Altura acantilado</div><div class="biodata-val">8–20 m</div></div>
+              <div class="biodata-item"><div class="biodata-label">Viento</div><div class="biodata-val">ONO · 20–40 km/h</div></div>
+              <div class="biodata-item"><div class="biodata-label">Temperatura arena</div><div class="biodata-val">Hasta 55°C (verano)</div></div>
+              <div class="biodata-item"><div class="biodata-label">Materia orgánica</div><div class="biodata-val">Muy baja · &lt;1%</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="eco-panel" id="spec4">
+          <div class="eco-content">
+            <div class="eco-title">🐾 Seres Vivos</div>
+            <div class="species-grid">
+              <div class="species-item"><span class="species-emoji">🌾</span><div><div class="species-name">Barrón (Ammophila)</div><div class="species-type">Fijadora de dunas</div></div></div>
+              <div class="species-item"><span class="species-emoji">🦎</span><div><div class="species-name">Lagartija colirroja</div><div class="species-type">Reptil endémico</div></div></div>
+              <div class="species-item"><span class="species-emoji">🌸</span><div><div class="species-name">Cardo marítimo</div><div class="species-type">Planta dunar</div></div></div>
+              <div class="species-item"><span class="species-emoji">🦅</span><div><div class="species-name">Aguilucho cenizo</div><div class="species-type">Ave rapaz</div></div></div>
+              <div class="species-item"><span class="species-emoji">🪲</span><div><div class="species-name">Escarabajo estercolero</div><div class="species-type">Insecto</div></div></div>
+              <div class="species-item"><span class="species-emoji">🐍</span><div><div class="species-name">Culebra de escalera</div><div class="species-type">Reptil</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="eco-panel" id="rel4">
+          <div class="eco-content">
+            <div class="eco-title">🔄 Interacciones Ecológicas</div>
+            <div class="relations-flow">
+              <div class="relation-item"><span class="relation-type">Ingeniería</span> Barrón fija arena y crea hábitat para otros organismos</div>
+              <div class="relation-item"><span class="relation-type">Termorregulación</span> Lagartija usa temperatura de arena para regular su calor</div>
+              <div class="relation-item"><span class="relation-type">Depredación</span> Aguilucho caza lagartijas y pequeños mamíferos</div>
+              <div class="relation-item"><span class="relation-type">Sucesión</span> Dunas → Matorral → Pinar (proceso ecológico)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARADA 5: Atardecer -->
+<section class="stop-section">
+  <div class="container">
+    <div class="stop-number">05</div>
+    <div class="stop-grid reveal">
+      <div class="stop-visual">
+        <svg class="stop-illustration" viewBox="0 0 600 450" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="sky5" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1A1A2E"/>
+              <stop offset="25%" stop-color="#4A1942"/>
+              <stop offset="50%" stop-color="#E14D2A"/>
+              <stop offset="70%" stop-color="#FF6B35"/>
+              <stop offset="85%" stop-color="#FFC857"/>
+              <stop offset="100%" stop-color="#FFD700"/>
+            </linearGradient>
+            <linearGradient id="sea5" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#C94B4B"/>
+              <stop offset="50%" stop-color="#1B4F72"/>
+              <stop offset="100%" stop-color="#0D2330"/>
+            </linearGradient>
+            <radialGradient id="sunset" cx="50%" cy="100%" r="80%">
+              <stop offset="0%" stop-color="#FFC857" stop-opacity="0.6"/>
+              <stop offset="60%" stop-color="#FF6B35" stop-opacity="0.2"/>
+              <stop offset="100%" stop-color="transparent"/>
+            </radialGradient>
+          </defs>
+          <rect width="600" height="450" fill="url(#sky5)"/>
+          <rect width="600" height="450" fill="url(#sunset)"/>
+          
+          <!-- Setting sun -->
+          <circle cx="300" cy="290" r="55" fill="#FFD700" opacity="0.95"/>
+          <circle cx="300" cy="290" r="40" fill="#FFF176"/>
+          <!-- Sun reflection on sea -->
+          
+          <!-- Sea -->
+          <rect x="0" y="285" width="600" height="165" fill="url(#sea5)"/>
+          
+          <!-- Sun path on water -->
+          <path d="M200,290 L400,290 L380,310 L220,310 Z" fill="rgba(255,200,50,0.4)"/>
+          <path d="M230,310 L370,310 L360,330 L240,330 Z" fill="rgba(255,200,50,0.25)"/>
+          <path d="M250,330 L350,330 L345,350 L255,350 Z" fill="rgba(255,200,50,0.15)"/>
+
+          <!-- Horizon waves -->
+          <path d="M0,295 Q75,289 150,295 Q225,301 300,295 Q375,289 450,295 Q525,301 600,295" fill="none" stroke="rgba(255,200,100,0.5)" stroke-width="1.5"/>
+          <path d="M0,318 Q90,312 180,318 Q270,324 360,318 Q450,312 540,318 Q570,320 600,318" fill="none" stroke="rgba(255,150,50,0.3)" stroke-width="1.2"/>
+
+          <!-- Silhouette coastline -->
+          <path d="M0,270 Q50,265 100,268 Q150,271 200,266 Q250,261 300,264 Q350,267 400,262 Q450,257 500,260 Q550,263 600,258 L600,285 L0,285 Z" fill="#0D1117"/>
+          
+          <!-- Pine silhouettes on coast -->
+          <g fill="#0D1117">
+            <polygon points="80,265 60,200 100,200"/>
+            <polygon points="80,255 65,215 95,215"/>
+            <polygon points="120,268 102,210 138,210"/>
+            <polygon points="120,258 107,225 133,225"/>
+            <polygon points="450,263 432,195 468,195"/>
+            <polygon points="450,253 437,210 463,210"/>
+            <polygon points="490,260 472,205 508,205"/>
+            <polygon points="490,252 477,220 503,220"/>
+            <polygon points="530,262 514,200 546,200"/>
+          </g>
+
+          <!-- Stars appearing -->
+          <g fill="white" opacity="0.5">
+            <circle cx="60" cy="30" r="1.2"/>
+            <circle cx="120" cy="50" r="1"/>
+            <circle cx="200" cy="20" r="1.4"/>
+            <circle cx="480" cy="35" r="1.2"/>
+            <circle cx="540" cy="55" r="1"/>
+            <circle cx="420" cy="18" r="1.3"/>
+          </g>
+
+          <!-- Cyclist silhouette returning -->
+          <g transform="translate(100, 267)" opacity="0.9">
+            <circle cx="20" cy="-26" r="7" fill="#0D1117"/>
+            <line x1="20" y1="-19" x2="20" y2="-6" stroke="#0D1117" stroke-width="3"/>
+            <line x1="8" y1="-12" x2="32" y2="-12" stroke="#0D1117" stroke-width="2"/>
+            <line x1="20" y1="-6" x2="10" y2="4" stroke="#0D1117" stroke-width="2"/>
+            <line x1="20" y1="-6" x2="30" y2="4" stroke="#0D1117" stroke-width="2"/>
+            <circle cx="10" cy="7" r="7" fill="none" stroke="#FFC857" stroke-width="2"/>
+            <circle cx="34" cy="7" r="7" fill="none" stroke="#FFC857" stroke-width="2"/>
+            <line x1="10" y1="7" x2="22" y2="-2" stroke="#FFC857" stroke-width="1.5"/>
+            <line x1="34" y1="7" x2="22" y2="-2" stroke="#FFC857" stroke-width="1.5"/>
+            <line x1="22" y1="-2" x2="20" y2="-6" stroke="#FFC857" stroke-width="1.5"/>
+          </g>
+
+          <rect x="0" y="395" width="600" height="55" fill="rgba(0,0,0,0.6)"/>
+          <text x="20" y="422" font-family="Playfair Display, serif" font-size="18" fill="#FFC857" font-style="italic">El atardecer atlántico</text>
+          <text x="20" y="440" font-family="DM Sans, sans-serif" font-size="12" fill="rgba(255,255,255,0.6)">Regreso por la costa · km 52 · 19:00</text>
+        </svg>
+        <div class="stop-time-badge">🌅 16:30 — Atardecer</div>
+        <div class="stop-km-badge">km 52 · FIN</div>
+      </div>
+
+      <div class="stop-info">
+        <div class="stop-tag">🌅 Parada 05</div>
+        <h2 class="stop-title">Regreso por la<br>costa al atardecer</h2>
+        <p class="stop-desc">El regreso por la línea de costa es el epílogo perfecto. La luz dorada del atardecer atlántico tiñe de naranja y malva el paisaje, los pinos se convierten en siluetas y el sonido de las olas marca el ritmo de los últimos kilómetros. Una despedida que querrás repetir.</p>
+
+        <div class="eco-tabs">
+          <button class="eco-tab active" onclick="switchTab(this, 'eco5')">🌍 Ecosistema</button>
+          <button class="eco-tab" onclick="switchTab(this, 'bio5')">🪨 Biotopo</button>
+          <button class="eco-tab" onclick="switchTab(this, 'spec5')">🦅 Biocenosis</button>
+          <button class="eco-tab" onclick="switchTab(this, 'rel5')">🔄 Relaciones</button>
+        </div>
+
+        <div class="eco-panel active" id="eco5">
+          <div class="eco-content">
+            <div class="eco-title">🌅 Ecosistema de Transición: Costa—Pinar</div>
+            <p style="color:var(--gris); font-size:0.85rem; line-height:1.6">La franja costera representa una zona de transición (ecotono) entre el ecosistema marino y el bosque litoral. Esta franja de ecotono concentra biodiversidad superior a ambos ecosistemas adyacentes, fenómeno conocido como «efecto de borde».</p>
+            <div class="eco-chips" style="margin-top:12px">
+              <span class="eco-chip">Ecotono</span>
+              <span class="eco-chip">Efecto de borde</span>
+              <span class="eco-chip">Biodiversidad</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="eco-panel" id="bio5">
+          <div class="eco-content">
+            <div class="eco-title">🪨 Datos del Biotopo al Atardecer</div>
+            <div class="biodata-grid">
+              <div class="biodata-item"><div class="biodata-label">Temperatura</div><div class="biodata-val">24–28°C tarde</div></div>
+              <div class="biodata-item"><div class="biodata-label">Luz solar</div><div class="biodata-val">Ángulo bajo 15–25°</div></div>
+              <div class="biodata-item"><div class="biodata-label">Marea</div><div class="biodata-val">Semi-diurna 2–3m</div></div>
+              <div class="biodata-item"><div class="biodata-label">Brisa marina</div><div class="biodata-val">Terral vesperal</div></div>
+              <div class="biodata-item"><div class="biodata-label">Visibilidad</div><div class="biodata-val">20–30 km en calma</div></div>
+              <div class="biodata-item"><div class="biodata-label">Actividad fauna</div><div class="biodata-val">Máxima crepuscular</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="eco-panel" id="spec5">
+          <div class="eco-content">
+            <div class="eco-title">🐾 Seres Vivos al Atardecer</div>
+            <div class="species-grid">
+              <div class="species-item"><span class="species-emoji">🦇</span><div><div class="species-name">Murciélago ratonero</div><div class="species-type">Mamífero nocturno</div></div></div>
+              <div class="species-item"><span class="species-emoji">🦅</span><div><div class="species-name">Milano negro</div><div class="species-type">Ave rapaz</div></div></div>
+              <div class="species-item"><span class="species-emoji">🦭</span><div><div class="species-name">Delfín mular</div><div class="species-type">Activo al atardecer</div></div></div>
+              <div class="species-item"><span class="species-emoji">🐢</span><div><div class="species-name">Tortuga boba</div><div class="species-type">Marina · EN</div></div></div>
+              <div class="species-item"><span class="species-emoji">🦟</span><div><div class="species-name">Luciérnaga</div><div class="species-type">Insecto bioluminiscente</div></div></div>
+              <div class="species-item"><span class="species-emoji">🦊</span><div><div class="species-name">Zorro rojo</div><div class="species-type">Sale al crepúsculo</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="eco-panel" id="rel5">
+          <div class="eco-content">
+            <div class="eco-title">🔄 Interacciones al Atardecer</div>
+            <div class="relations-flow">
+              <div class="relation-item"><span class="relation-type">Depredación</span> Murciélagos cazan insectos nocturnos en vuelo</div>
+              <div class="relation-item"><span class="relation-type">Cortejo</span> Luciérnagas emiten luz para atraer pareja</div>
+              <div class="relation-item"><span class="relation-type">Dispersión</span> Milano negro aprovecha térmicas vespertinas</div>
+              <div class="relation-item"><span class="relation-type">Efecto borde</span> Ecotono concentra mayor diversidad que ecosistemas simples</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- end paradas -->
+
+<!-- ===== STATS ===== -->
+<section class="stats-section" id="stats">
+  <div class="container">
+    <div class="reveal" style="text-align:center; margin-bottom:60px">
+      <div class="section-tag" style="justify-content:center; color:var(--verde-lima)">El recorrido en cifras</div>
+      <h2 class="section-title" style="color:white">Datos del recorrido</h2>
+    </div>
+    <div class="stats-grid reveal">
+      <div class="stat-item">
+        <div class="stat-icon">📏</div>
+        <span class="stat-num" data-target="52">0</span>
+        <div class="stat-label">Kilómetros totales</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">⏱️</div>
+        <span class="stat-num" data-target="12">0</span>
+        <div class="stat-label">Horas de aventura</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">🌿</div>
+        <span class="stat-num" data-target="5">0</span>
+        <div class="stat-label">Ecosistemas distintos</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">🐦</div>
+        <span class="stat-num" data-target="250">0</span>
+        <div class="stat-label">Especies observables</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon">📈</div>
+        <span class="stat-num" data-target="120">0</span>
+        <div class="stat-label">Desnivel acumulado (m)</div>
+      </div>
+    </div>
+
+    <div class="terrain-bars reveal" style="max-width:700px; margin:60px auto 0">
+      <h3 style="color:rgba(255,255,255,0.8); font-size:1rem; margin-bottom:28px; letter-spacing:0.05em; text-transform:uppercase; font-size:0.85rem">Tipo de terreno</h3>
+      <div class="terrain-bar-item">
+        <div class="terrain-bar-head">
+          <span class="terrain-bar-label">🌲 Pista forestal compacta</span>
+          <span class="terrain-bar-pct">42%</span>
+        </div>
+        <div class="terrain-bar-track">
+          <div class="terrain-bar-fill" style="background:linear-gradient(90deg,#52B788,#95D5B2); width:42%"></div>
+        </div>
+      </div>
+      <div class="terrain-bar-item">
+        <div class="terrain-bar-head">
+          <span class="terrain-bar-label">🌾 Pasarela de madera</span>
+          <span class="terrain-bar-pct">18%</span>
+        </div>
+        <div class="terrain-bar-track">
+          <div class="terrain-bar-fill" style="background:linear-gradient(90deg,#D4AC0D,#F9E79F); width:18%"></div>
+        </div>
+      </div>
+      <div class="terrain-bar-item">
+        <div class="terrain-bar-head">
+          <span class="terrain-bar-label">🏖️ Paseo marítimo</span>
+          <span class="terrain-bar-pct">24%</span>
+        </div>
+        <div class="terrain-bar-track">
+          <div class="terrain-bar-fill" style="background:linear-gradient(90deg,#2E86C1,#AED6F1); width:24%"></div>
+        </div>
+      </div>
+      <div class="terrain-bar-item">
+        <div class="terrain-bar-head">
+          <span class="terrain-bar-label">🛣️ Carretera secundaria</span>
+          <span class="terrain-bar-pct">16%</span>
+        </div>
+        <div class="terrain-bar-track">
+          <div class="terrain-bar-fill" style="background:linear-gradient(90deg,#7F8C8D,#BDC3C7); width:16%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== INSPIRE ===== -->
+<section class="inspire-section">
+  <div class="inspire-bg"></div>
+  <div class="inspire-content reveal">
+    <p class="inspire-quote">
+      "Donde la bicicleta rueda despacio,<br>
+      <em>la naturaleza habla más alto.</em>"
+    </p>
+    <p class="inspire-sub">
+      En un mundo hiperconectado, esta ruta es una invitación a escuchar el viento entre los pinos, a ver el reflejo de los flamencos en las marismas y a sentir que, pedaleando suave, se puede pertenecer al mundo natural. No como turista, sino como parte de él.
+    </p>
+    <div class="inspire-badges">
+      <span class="inspire-badge">🌿 Turismo sostenible</span>
+      <span class="inspire-badge">🚴 Movilidad verde</span>
+      <span class="inspire-badge">🌍 Ecoturismo</span>
+      <span class="inspire-badge">📵 Desconexión digital</span>
+      <span class="inspire-badge">🦩 Biodiversidad</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">Ruta Verde Doñana</div>
+        <p class="footer-brand-tagline">Una experiencia inmersiva de cicloturismo ecológico por el Parque Nacional de Doñana y la Costa de Huelva. Diseñada para quienes quieren explorar la naturaleza de forma lenta, consciente y memorable.</p>
+        <div class="footer-author">
+          <span>✍️ Autor</span>
+          <span class="author-name">Miguel Beltrán Alvarez</span>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">La ruta</div>
+        <ul class="footer-links">
+          <li><a href="#intro">Introducción</a></li>
+          <li><a href="#mapa">Mapa interactivo</a></li>
+          <li><a href="#paradas">Paradas</a></li>
+          <li><a href="#stats">Estadísticas</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Ecosistemas</div>
+        <ul class="footer-links">
+          <li><a href="#">Costa atlántica</a></li>
+          <li><a href="#">Pinar mediterráneo</a></li>
+          <li><a href="#">Marismas Doñana</a></li>
+          <li><a href="#">Sistema dunar</a></li>
+          <li><a href="#">Zona intermareal</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-bottom-author">
+        Diseño y contenido por <span>Miguel Beltrán Alvarez</span> · Cicloturismo ecológico · Huelva, España
+      </div>
+      <div class="eco-chips">
+        <span class="eco-chip">🌿 Doñana</span>
+        <span class="eco-chip">🚴 E-bike</span>
+        <span class="eco-chip">♻️ Eco</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+// ===== CURSOR =====
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.transform = `translate(${mx - 6}px, ${my - 6}px)`;
+});
+
+function animRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
+  requestAnimationFrame(animRing);
+}
+animRing();
+
+document.querySelectorAll('a, button, .map-point, .info-card, .eco-tab').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+});
+
+// ===== NAV =====
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+  // Scroll progress
+  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+  document.getElementById('scrollProgress').style.transform = `scaleX(${pct})`;
+  // Animate counters & bars when in view
+  checkAnimations();
+});
+
+// ===== THEME =====
+const themeBtn = document.getElementById('themeBtn');
+themeBtn.addEventListener('click', () => {
+  const isDark = document.documentElement.dataset.theme === 'dark';
+  document.documentElement.dataset.theme = isDark ? '' : 'dark';
+  themeBtn.textContent = isDark ? '🌙' : '☀️';
+});
+
+// ===== PARTICLES =====
+const particlesEl = document.getElementById('particles');
+for (let i = 0; i < 22; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const size = Math.random() * 5 + 2;
+  p.style.cssText = `
+    width:${size}px; height:${size}px;
+    left:${Math.random()*100}%;
+    --dx:${(Math.random()-0.5)*120}px;
+    animation-duration:${Math.random()*12+8}s;
+    animation-delay:${Math.random()*10}s;
+    opacity:${Math.random()*0.5+0.2};
+  `;
+  particlesEl.appendChild(p);
+}
+
+// ===== SCROLL REVEAL =====
+const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+reveals.forEach(el => obs.observe(el));
+
+// ===== ANIMATED COUNTERS =====
+let countersAnimated = false;
+function animateCounters() {
+  if (countersAnimated) return;
+  const statsSection = document.querySelector('.stats-section');
+  if (!statsSection) return;
+  const rect = statsSection.getBoundingClientRect();
+  if (rect.top < window.innerHeight * 0.8) {
+    countersAnimated = true;
+    document.querySelectorAll('[data-target]').forEach(el => {
+      const target = +el.dataset.target;
+      const suffix = el.dataset.suffix || '';
+      let current = 0;
+      const step = target / 60;
+      const timer = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = Math.round(current) + suffix;
+        if (current >= target) clearInterval(timer);
+      }, 25);
+    });
+    // Terrain bars
+    document.querySelectorAll('.terrain-bar-fill').forEach(bar => {
+      bar.style.transform = 'scaleX(1)';
+    });
+  }
+}
+
+function checkAnimations() {
+  animateCounters();
+}
+
+// ===== MAP INTERACTIONS =====
+const tooltip = document.getElementById('mapTooltip');
+const stopData = {
+  1: { title: '1. Matalascañas', info: '🌅 07:00 · Inicio · km 0\nCosta atlántica · Amanecer' },
+  2: { title: '2. Pinares de Doñana', info: '🌲 09:30 · km 15\nBosque mediterráneo · Lince ibérico' },
+  3: { title: '3. Marismas', info: '🦩 11:30 · km 28\nHumedal Ramsar · Flamencos' },
+  4: { title: '4. Cuesta Maneli', info: '🌊 13:30 · km 40\nSistema dunar · Pasarelas' },
+  5: { title: '5. Costa · Atardecer', info: '🌅 16:30 · km 52 · FIN\nEcotono · Luz dorada' }
+};
+
+document.querySelectorAll('.map-point').forEach(point => {
+  point.addEventListener('mouseenter', function(e) {
+    const stop = this.dataset.stop;
+    const data = stopData[stop];
+    document.getElementById('tooltipTitle').textContent = data.title;
+    document.getElementById('tooltipInfo').textContent = data.info;
+    const mapWrapper = document.querySelector('.map-wrapper');
+    const wrapRect = mapWrapper.getBoundingClientRect();
+    const ptX = +this.dataset.x;
+    const ptY = +this.dataset.y;
+    const svgW = 900, svgH = 500;
+    const svgEl = document.querySelector('.route-map');
+    const svgRect = svgEl.getBoundingClientRect();
+    const scaleX = svgRect.width / svgW;
+    const scaleY = svgRect.height / svgH;
+    let left = svgRect.left - wrapRect.left + ptX * scaleX + 20;
+    let top = svgRect.top - wrapRect.top + ptY * scaleY - 30;
+    if (left + 200 > wrapRect.width) left = svgRect.left - wrapRect.left + ptX * scaleX - 220;
+    tooltip.style.left = left + 'px';
+    tooltip.style.top = top + 'px';
+    tooltip.classList.add('visible');
+  });
+  point.addEventListener('mouseleave', () => tooltip.classList.remove('visible'));
+});
+
+// ===== ANIMATE MAP ROUTE =====
+const routePath = document.getElementById('routePath');
+function animateRoute() {
+  const mapSection = document.querySelector('.map-section');
+  const rect = mapSection.getBoundingClientRect();
+  if (rect.top < window.innerHeight * 0.7 && !routePath.dataset.animated) {
+    routePath.dataset.animated = 'true';
+    routePath.style.transition = 'stroke-dashoffset 2.5s cubic-bezier(0.16, 1, 0.3, 1)';
+    routePath.style.strokeDashoffset = '0';
+    // Animate pulsing rings on map
+    document.querySelectorAll('.pulse-ring').forEach((ring, i) => {
+      ring.style.animation = `pulse 2s ${i * 0.3}s ease-in-out infinite`;
+    });
+  }
+}
+window.addEventListener('scroll', animateRoute);
+
+// ===== ECO TABS =====
+function switchTab(btn, panelId) {
+  const tabsContainer = btn.closest('.eco-tabs');
+  const infoSection = btn.closest('.stop-info');
+  tabsContainer.querySelectorAll('.eco-tab').forEach(t => t.classList.remove('active'));
+  infoSection.querySelectorAll('.eco-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+
+// ===== SMOOTH SCROLL for buttons =====
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+
+// Initial check
+checkAnimations();
+animateRoute();
+</script>
+
+</body>
+</html>
